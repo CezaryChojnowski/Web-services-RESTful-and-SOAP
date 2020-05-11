@@ -6,16 +6,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/messages")
 public class MessageController {
-
-//    @Context
-//    private HttpHeaders httpHeaders;
 
     private final MessageService messageService;
 
@@ -29,7 +28,8 @@ public class MessageController {
     }
 
     @GetMapping
-    public List<Message> getAllMessages(){
+    public List<Message> getAllMessages(HttpServletRequest request){
+        System.out.println("URI -- "+ request.getRequestURL());
         return messageService.getAllMessages();
     }
 
@@ -47,5 +47,16 @@ public class MessageController {
     @DeleteMapping(value = "/{messageId}")
     public Message removeMessage(@PathVariable("messageId") Long id){
         return messageService.deleteMessage(id);
+    }
+
+    @GetMapping(value = "/byQueryParam")
+    public Message getMessageByQueryParam(@RequestParam(name="messageId") Long id){
+        return messageService.getMessage(id);
+    }
+
+    @GetMapping(value = "/withCustomHeader")
+    public List<Message> getMessages(@RequestHeader Map<String, String> headers){
+        headers.forEach((key, value) -> System.out.println(String.format("Header '%s' = %s", key, value)));
+        return messageService.getAllMessages();
     }
 }
