@@ -1,9 +1,6 @@
 package com.rsi.demo.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
@@ -13,6 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @XmlRootElement
+@ToString
 public class Message {
     private long id;
     private String message;
