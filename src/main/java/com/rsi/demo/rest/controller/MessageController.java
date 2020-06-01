@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.QueryParam;
 import java.util.List;
 import java.util.Map;
 
@@ -58,5 +59,14 @@ public class MessageController {
     public List<Message> getMessages(@RequestHeader Map<String, String> headers){
         headers.forEach((key, value) -> System.out.println(String.format("Header '%s' = %s", key, value)));
         return messageService.getAllMessages();
+    }
+
+    @GetMapping(value = "/query")
+    public List<Message> getMessages(@RequestParam("zaczynasie") String par1 ) {
+        if (par1 != null){
+            return messageService.getAllMessagesStartingWith(par1);
+        }
+        return messageService.getAllMessages();
+
     }
 }

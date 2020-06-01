@@ -3,6 +3,7 @@ package com.rsi.demo.domain;
 import com.rsi.demo.model.Message;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 @Service
@@ -40,5 +41,16 @@ public class MessageService {
 
     public Message deleteMessage(Long id){
        return messageMap.remove(id);
+    }
+
+    public List<Message> getAllMessagesStartingWith(String par1) {
+
+        ArrayList result = new ArrayList<>();
+        for (Map.Entry<Long, Message> entry : messageMap.entrySet()) {
+            if(messageMap.get(entry.getKey()).getMessage().toLowerCase().startsWith(par1.toLowerCase())){
+                result.add(messageMap.get(entry.getKey()));
+            }
+        }
+        return result;
     }
 }
