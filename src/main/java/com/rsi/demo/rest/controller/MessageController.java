@@ -1,13 +1,19 @@
 package com.rsi.demo.rest.controller;
 
+import com.rsi.demo.domain.CommentService;
 import com.rsi.demo.domain.MessageService;
+import com.rsi.demo.model.Comment;
 import com.rsi.demo.model.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +24,7 @@ import java.util.Map;
 public class MessageController {
 
     private final MessageService messageService;
+    private final CommentService commentService;
 
     @GetMapping(value = "{messageId}",
             produces = {
@@ -32,11 +39,6 @@ public class MessageController {
     public List<Message> getAllMessages(HttpServletRequest request){
         System.out.println("URI -- "+ request.getRequestURL());
         return messageService.getAllMessages();
-    }
-
-    @PostMapping
-    public Message createNewMessage(@RequestBody Message message){
-        return messageService.createMessage(message);
     }
 
     @PutMapping(value = "/{messageId}")
@@ -69,4 +71,32 @@ public class MessageController {
         return messageService.getAllMessages();
 
     }
+
+    @PostMapping
+    public ResponseEntity<Message> createNewMessage(@RequestBody Message message, @NotNull HttpServletRequest request){
+        Message result = messageService.createMessage(message);
+        String newid = String.valueOf(result.getId());
+        String uri = request.getRequestURL() + "/" + newid;
+        Response.created(URI.create(uri));
+        return ResponseEntity.created(URI.create(uri)).body(result);
+    }
+
+    @GetMapping(value = "{messageId}/comments",
+            produces = {
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE
+            })
+    public List<Comment> getComments(@PathVariable("messageId") Long id){
+        return commentService.getAllCommentsByMessage(id);
+    }
+
+    @PostMapping(value = "{messageId}/comments",
+            produces = {
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE
+            })
+    public Comment createComment(@RequestBody Comment comment, @PathVariable("messageId") Long id){
+        return commentService.createMessage(comment, id);
+    }
+
 }

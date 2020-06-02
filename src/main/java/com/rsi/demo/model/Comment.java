@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -12,10 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @XmlRootElement
 @ToString
-public class Message {
+public class Comment {
     private long id;
-    private String message;
+    private String comment;
     private Date created;
     private String author;
-    private List<Comment> comments;
 }

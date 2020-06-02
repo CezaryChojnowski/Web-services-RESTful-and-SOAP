@@ -1,5 +1,6 @@
 package com.rsi.demo.domain;
 
+import com.rsi.demo.model.Comment;
 import com.rsi.demo.model.Message;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +11,12 @@ import java.util.*;
 public class MessageService {
 
     static private Map<Long, Message> messageMap = new HashMap<>();
+    private List<Comment> comments = new ArrayList<>();
 
     public MessageService(){
-        messageMap.put(1L, new Message(1L, "Pierwsza wiadomość", new Date(),"User1"));
-        messageMap.put(2L, new Message(2L, "Druga wiadomość", new Date(),"User2"));
-        messageMap.put(3L, new Message(3L, "Trzecia wiadomość", new Date(),"User3"));
+        messageMap.put(1L, new Message(1L, "Pierwsza wiadomość", new Date(),"User1", comments ));
+        messageMap.put(2L, new Message(2L, "Druga wiadomość", new Date(),"User2", comments));
+        messageMap.put(3L, new Message(3L, "Trzecia wiadomość", new Date(),"User3", comments));
     }
 
     public List<Message> getAllMessages(){
