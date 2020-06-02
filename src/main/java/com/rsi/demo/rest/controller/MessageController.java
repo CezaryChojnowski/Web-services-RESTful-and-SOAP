@@ -5,17 +5,20 @@ import com.rsi.demo.domain.MessageService;
 import com.rsi.demo.model.Comment;
 import com.rsi.demo.model.Message;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.Link;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 
 @RequiredArgsConstructor
@@ -31,13 +34,23 @@ public class MessageController {
             MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_JSON_VALUE
     })
-    public Message getMessage(@PathVariable("messageId") Long id){
-        return messageService.getMessage(id);
+    public ResponseEntity<Message> getMessage(@PathVariable("messageId") long id){
+        Message message = messageService.getMessage(id);
+
+        //Self link
+        Link selfLink = linkTo(MessageController.class).slash(id).withSelfRel();
+
+//        Method link
+        Link commentLink = linkTo(MessageController.class).slash(id).slash("comments").withRel("comments");
+
+        message.add(selfLink);
+        message.add(commentLink);
+        return new ResponseEntity<Message>(message, HttpStatus.OK);
     }
 
     @GetMapping
     public List<Message> getAllMessages(HttpServletRequest request){
-        System.out.println("URI -- "+ request.getRequestURL());
+        System.out.println("aaaaa");
         return messageService.getAllMessages();
     }
 

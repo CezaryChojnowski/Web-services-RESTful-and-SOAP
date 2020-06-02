@@ -12,38 +12,39 @@ import org.springframework.web.client.RestTemplate;
 import javax.ws.rs.ClientErrorException;
 import java.util.Arrays;
 
-
+//
+// implements CommandLineRunner
 @SpringBootApplication
-public class DemoApplication implements CommandLineRunner {
+public class DemoApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        System.out.println(getAllProducts());
-
-        System.out.println(findProducts("", "d", 500));
-    }
-
-    public ResponseEntity<Products> getAllProducts()  throws ClientErrorException, IllegalStateException {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-        ResponseEntity<Products> resultMessages = restTemplate.exchange("http://localhost:8080/products", HttpMethod.GET, entity, Products.class);
-        return resultMessages;
-    }
-
-    public String findProducts(String name, String producer, int price){
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        SearchParam searchParam = new SearchParam(name,producer,price);
-        HttpEntity<SearchParam> entity = new HttpEntity<SearchParam>(searchParam, headers);
-        return restTemplate.postForObject("http://localhost:8080/products", entity, String.class);
-    }
+//    @Override
+//    public void run(String... args) throws Exception {
+//        System.out.println(getAllProducts());
+//
+//        System.out.println(findProducts("", "d", 500));
+//    }
+//
+//    public ResponseEntity<Products> getAllProducts()  throws ClientErrorException, IllegalStateException {
+//        RestTemplate restTemplate = new RestTemplate();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+//        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+//        ResponseEntity<Products> resultMessages = restTemplate.exchange("http://localhost:8080/products", HttpMethod.GET, entity, Products.class);
+//        return resultMessages;
+//    }
+//
+//    public String findProducts(String name, String producer, int price){
+//        RestTemplate restTemplate = new RestTemplate();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+//        SearchParam searchParam = new SearchParam(name,producer,price);
+//        HttpEntity<SearchParam> entity = new HttpEntity<SearchParam>(searchParam, headers);
+//        return restTemplate.postForObject("http://localhost:8080/products", entity, String.class);
+//    }
 
     //------------------------------------------------------------------------------------------------------------------------------------------------
 //    @Override

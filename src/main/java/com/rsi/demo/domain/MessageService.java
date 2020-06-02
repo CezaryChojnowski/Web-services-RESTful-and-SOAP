@@ -11,10 +11,10 @@ import java.util.*;
 public class MessageService {
 
     static private Map<Long, Message> messageMap = new HashMap<>();
-    private List<Comment> comments = new ArrayList<>();
 
     public MessageService(){
-        messageMap.put(1L, new Message(1L, "Pierwsza wiadomość", new Date(),"User1", comments ));
+        List<Comment> comments = new ArrayList<>();
+        messageMap.put(1L, new Message(1L, "Pierwsza wiadomość", new Date(),"User1", comments));
         messageMap.put(2L, new Message(2L, "Druga wiadomość", new Date(),"User2", comments));
         messageMap.put(3L, new Message(3L, "Trzecia wiadomość", new Date(),"User3", comments));
     }
